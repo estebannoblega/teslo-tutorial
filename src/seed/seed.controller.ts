@@ -6,6 +6,7 @@ import { SeedService } from './seed.service';
 
 
 @ApiTags('SEED')
+@Auth()
 @Controller('seed')
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
