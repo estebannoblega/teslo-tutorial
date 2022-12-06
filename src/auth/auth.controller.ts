@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Auth } from './decorators';
 import { GetUser, RawHeaders} from './decorators/get-user.decorator';
@@ -15,16 +15,21 @@ import { ValidRoles } from './interfaces';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiResponse({ status:201, description: 'User was created', type: User})
+  @ApiResponse({ status:400, description: 'Bad Request' })
+  @ApiResponse({ status:401, description: 'Unauthorized' })
   @Post('register')
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
+  @ApiResponse({ status:201, description: 'User logged'})
   @Post('login')
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
+  @ApiResponse({ status:201, description: 'User logged',type: User})
   @Get('check-status')
   @Auth()
   checkAuthStatus( 
@@ -32,7 +37,7 @@ export class AuthController {
   ){
     return this.authService.checkAuthStatus(user);
   }
-
+/*
   @Get('private')
   @UseGuards(AuthGuard())
   testingPrivateRoute(
@@ -72,5 +77,5 @@ export class AuthController {
         user
       }
 
-  }
+  }*/
 }
