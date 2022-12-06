@@ -20,7 +20,7 @@ export class ProductsController {
 
   @Post()
   @Auth()
-  @ApiBearerAuth()
+  @ApiBasicAuth()
   @ApiResponse({ status:201, description: 'Product was created', type: Product})
   @ApiResponse({ status:400, description: 'Bad Request' })
   @ApiResponse({ status:403, description: 'Token related' })
