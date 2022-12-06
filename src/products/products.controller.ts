@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ParseUUIDPipe } from '@nestjs/common';
-import { ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiProperty, ApiResponse, ApiTags,ApiBearerAuth,ApiBasicAuth } from '@nestjs/swagger';
 
 
 import { ProductsService } from './products.service';
@@ -20,6 +20,7 @@ export class ProductsController {
 
   @Post()
   @Auth()
+  @ApiBearerAuth()
   @ApiResponse({ status:201, description: 'Product was created', type: Product})
   @ApiResponse({ status:400, description: 'Bad Request' })
   @ApiResponse({ status:403, description: 'Token related' })
@@ -49,7 +50,9 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @Auth()
   @ApiResponse({ status:200, description: 'Update Successful'})
+  @ApiBasicAuth()
   update(
     @Param('id',ParseUUIDPipe) id: string, @Body() updateProductDto: UpdateProductDto,
     @GetUser() user: User,
@@ -58,6 +61,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiBasicAuth()
   @ApiResponse({ status:201, description: 'Delete Successful'})
   @ApiResponse({ status:400, description: 'Product not found'})
   @Auth(ValidRoles.admin)

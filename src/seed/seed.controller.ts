@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags,ApiResponse } from '@nestjs/swagger';
+import { ApiTags,ApiResponse,ApiBasicAuth } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 import { SeedService } from './seed.service';
@@ -7,6 +7,7 @@ import { SeedService } from './seed.service';
 
 @ApiTags('SEED')
 @Auth()
+@ApiBasicAuth()
 @Controller('seed')
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}

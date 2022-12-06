@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Auth } from './decorators';
 import { GetUser, RawHeaders} from './decorators/get-user.decorator';
@@ -29,9 +29,10 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
-  @ApiResponse({ status:201, description: 'User logged',type: User})
   @Get('check-status')
   @Auth()
+  @ApiResponse({ status:201, description: 'User logged',type: User})
+  @ApiBearerAuth()
   checkAuthStatus( 
     @GetUser() user: User
   ){
